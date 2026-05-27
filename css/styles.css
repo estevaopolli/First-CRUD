@@ -1,0 +1,47 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #F7F7F7;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+h1{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button, input{
+    font-family: inherit;
+}
+
+button{
+    cursor: pointer;
+
+}
+
+input{
+    padding: 5px;
+    border-radius: 5px;
+    border-width: thin;
+}
+
+.button-solid{
+    display: flex;
+    justify-self: center;
+    background-color: #0248BE;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 10px;
+    border: none
+}
+
+.button-solid:hover{
+    background-color: #033589;
+}
+
+.button-solid:active{
+    transform: scale(0.95);
+}
