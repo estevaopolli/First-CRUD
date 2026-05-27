@@ -12,7 +12,7 @@
             <h1>Registre-se</h1>
         </div>
         <div>
-            <form>
+            <form type="reset">
                 <label for="username">Nome</label> <br>
                 <input type="text" id="username" name="username" required> <br><br>
                 <label for="email">Email</label> <br>
@@ -35,7 +35,17 @@
                 passwords: password
             }
 
-            console.log(users);
+            fetch('http://localhost:5134/usuarios', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    email: email,
+                    password: password
+                })
+            })
         }
     </script>
 </body>
