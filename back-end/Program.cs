@@ -31,16 +31,28 @@ app.UseHttpsRedirection();
 
 app.UseCors("PermitirFrontEnd");
 
-List<Registro> usuarios = new();
+List<Registro> users = new();
+
 app.MapGet("/usuarios", () =>
 {
-    return Results.Ok(usuarios);
+    return Results.Ok(users);
 });
 
 app.MapPost("/usuarios", (Registro u) =>
 {
-    usuarios.Add(u);
-    return Results.Ok(u);
+    if (users.Any(uv => uv.email == u.email))
+    {
+        return Results.BadRequest(new {message = "E-mail já cadastrado"});
+    }
+    else if(users.Any(uv => uv.username == u.username))
+    {
+        return Results.BadRequest(new{message = "Esse nome já existe"});
+    }
+    else
+    {
+        users.Add(u);
+        return Results.Ok(new {message="Usuário cadastrado com sucesso"});
+    }
 });
 
 app.Run();
