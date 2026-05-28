@@ -22,18 +22,25 @@ async function ValidateSignUP(){
         switch (responseMessage.code){
             case "USER_ALREADY_EXISTS":
                 console.log("Usuário já existe")
+                document.getElementById("used-user-error").style.display = "block"
+                document.getElementById("invalid-user-error").style.display = "none"
                 break;
 
             case "EMAIL_ALREADY_EXISTS":
                 console.log("Email já existe");
+                document.getElementById("used-email-error").style.display = "block"
+                document.getElementById("invalid-email-error").style.display = "none"
                 break;
 
             case "INVALID_EMAIL":
-                console.log("Email inválido");
+                document.getElementById("invalid-email-error").style.display = "block"
+                document.getElementById("used-email-error").style.display = "none"
                 break;
 
             case "INVALID_USERNAME":
                 console.log("Usuário inválido");
+                document.getElementById("invalid-user-error").style.display = "block"
+                document.getElementById("used-user-error").style.display = "none"
                 break;
 
             case "INVALID_PASSWORD":
