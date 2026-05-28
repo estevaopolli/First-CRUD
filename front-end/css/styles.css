@@ -53,3 +53,8 @@ input{
     padding: 20px;
     border: 0.5px solid black;
 }
+
+.error{
+    color: red;
+    display: none;
+}

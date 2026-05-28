@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/styles.css">
-    <script src=".\js\api.js" defer></script>
+    <script src="js/ui.js" type="module" defer></script>
     <title>Cadastro</title>
 </head>
 <body>
@@ -15,11 +15,16 @@
         <div>
             <form>
                 <label for="username">Nome</label> <br>
-                <input type="text" id="username" name="username" required> <br><br>
+                <input type="text" id="username" name="username" required> <br>
+                <div class="error" id="invalid-name-error">Informe um nome válido!</div>
+
                 <label for="email">Email</label> <br>
-                <input type="text" id="email" name="email" required> <br><br>
+                <input type="text" id="email" name="email" required> <br>
+                <div class="error" id="invalid-email-error">Informe um E-mail válido!</div>
+
                 <label for="password">Senha</label> <br>
                 <input type="password" id="password" name="password" required> <br> <br>
+                <div class="error" id="invalid-password-error">Senha inválida!</div>
                 <button id="signup-button" type="reset" class="button-solid">Cadastre-se</button>
             </form>
         </div>

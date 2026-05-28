@@ -1,5 +1,6 @@
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Permissions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,26 +41,39 @@ app.MapGet("/usuarios", () =>
 
 app.MapPost("/usuarios", (Registro u) =>
 {
-    if (users.Any(uv => uv.email == u.email))
+    if (string.IsNullOrEmpty(u.Username))
     {
-        return Results.BadRequest(new {message = "E-mail já cadastrado"});
+        return Results.BadRequest(new {message = "Usuário inválido", code = "INVALID_USERNAME"});
     }
-    else if(users.Any(uv => uv.username == u.username))
+    if (string.IsNullOrEmpty(u.Email))
     {
-        return Results.BadRequest(new{message = "Esse nome já existe"});
+        return Results.BadRequest(new {message = "E-mail inválido", code = "INVALID_EMAIL"});
+    }
+    if (string.IsNullOrEmpty(u.Password))
+    {
+        return Results.BadRequest(new {message = "Senha inválida", code = "INVALID_PASSWORD"});
+    }
+
+    if(users.Any(uv => uv.Username == u.Username))
+    {
+        return Results.BadRequest(new{message = "Esse usuário já existe", code="USER_ALREADY_EXISTS"});
+    }
+    else if (users.Any(uv => uv.Email == u.Email))
+    {
+        return Results.BadRequest(new {message = "E-mail já cadastrado", code = "EMAIL_ALREADY_EXISTS"});
     }
     else
     {
         users.Add(u);
-        return Results.Ok(new {message="Usuário cadastrado com sucesso"});
+        return Results.Ok(new {message="Usuário cadastrado com sucesso", code="SUCCESSFUL_REGISTRATION"});
     }
 });
 
 app.Run();
 public class Registro
 {
-    public string username {get; set;}
-    public string email {get; set;}
-    public string password {get; set;}
+    public string Username {get; set;}
+    public string Email {get; set;}
+    public string Password {get; set;}
 }
 
