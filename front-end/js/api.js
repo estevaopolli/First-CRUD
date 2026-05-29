@@ -1,11 +1,23 @@
-export async function signup(usuario){
-    const response = await fetch('http://localhost:5134/usuarios', {
+export async function signup(newUser){
+    const response = await fetch('http://localhost:5134/signup', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(usuario)
+        body: JSON.stringify(newUser)
     });
     
     return response;
+}
+
+export async function login(user){
+    const response = await fetch('http://localhost:5134/login', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    });
+    const data = await response.json();
+    console.log(data.message);
 }

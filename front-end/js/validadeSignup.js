@@ -1,22 +1,21 @@
 import { signup } from "./api.js";
 
-const $button = document.querySelector("#signup-button");
-$button.addEventListener('click', ValidateSignUP);
+const $signupButton = document.querySelector("#signup-button");
+$signupButton.addEventListener('click', ValidateSignUP);
 
 async function ValidateSignUP(){
     const $username = document.querySelector("#username").value;
     const $email = document.querySelector("#email").value;
     const $password = document.querySelector("#password").value;
 
-    const usuario = {
+    const newUser = {
     username: $username,
     email: $email,
     password: $password
     };
 
-    const response = await signup(usuario);
+    const response = await signup(newUser);
     const responseMessage = await response.json();
-    console.log(responseMessage);
 
     if(!response.ok){
         switch (responseMessage.code){
@@ -56,6 +55,8 @@ async function ValidateSignUP(){
         window.location.href = "./login.html"
     }
 }
+
+
 
 
 

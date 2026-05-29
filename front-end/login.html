@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/styles.css">
+    <script src="js/validateLogin.js" type="module" defer></script>
     <title>Login</title>
 </head>
 <body>
@@ -14,10 +15,11 @@
         <div>
             <form>
                 <label for="email">Email</label> <br>
-                <input type="text" name="email"> <br>
+                <input type="text" name="email" id="email"> <br>
                 <label for="password">Password</label> <br>
-                <input type="password" name="password"> <br> <br>
-                <button class="button-solid">Entrar</button>
+                <input type="password" name="password" id="password"> <br> <br>
+
+                <button id="login-button" class="button-solid" type="button">Entrar</button>
             </form> 
         </div>
     </div>

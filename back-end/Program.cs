@@ -32,14 +32,14 @@ app.UseHttpsRedirection();
 
 app.UseCors("PermitirFrontEnd");
 
-List<Registro> users = new();
+List<User> users = new();
 
 app.MapGet("/usuarios", () =>
 {
     return Results.Ok(users);
 });
 
-app.MapPost("/usuarios", (Registro u) =>
+app.MapPost("/signup", (User u) =>
 {
     if (string.IsNullOrEmpty(u.Username))
     {
@@ -69,8 +69,20 @@ app.MapPost("/usuarios", (Registro u) =>
     }
 });
 
+app.MapPost("/login", (User u) =>
+{
+    if (users.Any(uv => uv.Password == u.Password) && users.Any(uv => uv.Email == u.Email))
+    {
+        return Results.Ok(new {message = "Usuário validado com sucesso", code = "SUCCESSFUL_VALIDATION"});
+    }
+    else
+    {
+        return Results.BadRequest(new {message = "E-mail ou Senha incorretos", code = "INCORRECT_CREDENTIALS"});
+    }
+});
+
 app.Run();
-public class Registro
+public class User
 {
     public string Username {get; set;}
     public string Email {get; set;}
