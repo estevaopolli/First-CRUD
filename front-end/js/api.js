@@ -18,6 +18,6 @@ export async function login(user){
         },
         body: JSON.stringify(user)
     });
-    const data = await response.json();
-    console.log(data.message);
+    const responseMessage = await response.json();
+    return responseMessage;
 }

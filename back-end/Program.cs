@@ -71,7 +71,7 @@ app.MapPost("/signup", (User u) =>
 
 app.MapPost("/login", (User u) =>
 {
-    if (users.Any(uv => uv.Password == u.Password) && users.Any(uv => uv.Email == u.Email))
+    if (users.Any(uv => uv.Password == u.Password && uv.Email == u.Email))
     {
         return Results.Ok(new {message = "Usuário validado com sucesso", code = "SUCCESSFUL_VALIDATION"});
     }

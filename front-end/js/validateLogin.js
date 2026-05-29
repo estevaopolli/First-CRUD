@@ -12,6 +12,13 @@ async function ValidateLogin() {
         Password: $password
     };
 
-    await login(user);
-    console.log("debug");
+    const responseMessage = await login(user);
+    switch (responseMessage.code) {
+        case "INCORRECT_CREDENTIALS":
+            document.getElementById("incorrect-credentials-error").style.display = "block";
+            break;
+        case "SUCCESSFUL_VALIDATION":
+            window.location.href = "./dashboard.html";
+    }
+    console.log(responseMessage.code);
 }
