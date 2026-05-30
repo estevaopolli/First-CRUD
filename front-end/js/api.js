@@ -1,5 +1,7 @@
+const API_URL = "https://localhost:7252";
+
 export async function signup(newUser){
-    const response = await fetch('http://localhost:5134/signup', {
+    const response = await fetch(`${API_URL}/signup`, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
@@ -11,7 +13,7 @@ export async function signup(newUser){
 }
 
 export async function login(user){
-    const response = await fetch('http://localhost:5134/login', {
+    const response = await fetch(`${API_URL}/login`, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'

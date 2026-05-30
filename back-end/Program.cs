@@ -1,6 +1,8 @@
+using System.Net.Mail;
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Permissions;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,10 @@ app.MapGet("/usuarios", () =>
 
 app.MapPost("/signup", (User u) =>
 {
+    var passwordHasher = new PasswordHasher<User>();
+    string hash = passwordHasher.HashPassword(u, u.Password);
+    u.Password = hash;
+
     if (string.IsNullOrEmpty(u.Username))
     {
         return Results.BadRequest(new {message = "Usuário inválido", code = "INVALID_USERNAME"});
@@ -71,14 +77,19 @@ app.MapPost("/signup", (User u) =>
 
 app.MapPost("/login", (User u) =>
 {
-    if (users.Any(uv => uv.Password == u.Password && uv.Email == u.Email))
+    var passwordHasher = new PasswordHasher<User>();
+    var findingUser = users.FirstOrDefault(uv => uv.Email == u.Email);
+    if(findingUser != null)
     {
-        return Results.Ok(new {message = "Usuário validado com sucesso", code = "SUCCESSFUL_VALIDATION"});
+        var hashedPassword = findingUser.Password;
+        var passwordVerify = passwordHasher.VerifyHashedPassword(u, hashedPassword, u.Password);
+
+        if (passwordVerify == PasswordVerificationResult.Success)
+        {
+            return Results.Ok(new {message = "Usuário validado com sucesso", code = "SUCCESSFUL_VALIDATION"});
+        }
     }
-    else
-    {
-        return Results.BadRequest(new {message = "E-mail ou Senha incorretos", code = "INCORRECT_CREDENTIALS"});
-    }
+    return Results.BadRequest(new {message = "E-mail ou Senha incorretos", code = "INCORRECT_CREDENTIALS"});
 });
 
 app.Run();
