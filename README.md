@@ -9,7 +9,7 @@ No Front-End o JavaScript é dividido em três códigos:
 * validateLogin.js que importa a função "login()" do api.js e os envia os dados preenchidos no login.
 
 ## Back-End
-O Back-End é uma minimal API desenvolvida com C# que recebe as requisições do front-end, criptografa e verifica a senha utilizando a classe PasswordHasher nativa do ASP.NET. Ele também é responsável em verificar se as credenciais do usuário estão existem no sistema.
+O Back-End é uma minimal API desenvolvida com C# que recebe as requisições do front-end, criptografa e verifica a senha utilizando a classe PasswordHasher nativa do ASP.NET. Ele também é responsável em verificar se as credenciais do usuário existem no sistema.
 
 ## Banco de Dados
 No momento a aplicação não funciona com um banco de dados externo. Ele salva as informações diretamente na memória do sistema. Mas pretendo incrementa-lo muito em breve utilizando o SQL Server.
