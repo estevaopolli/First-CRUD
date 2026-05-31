@@ -3,11 +3,15 @@ using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Permissions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Data.AppDbContext;
+using Models.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -34,14 +38,12 @@ app.UseHttpsRedirection();
 
 app.UseCors("PermitirFrontEnd");
 
+
+
 List<User> users = new();
 
-app.MapGet("/usuarios", () =>
-{
-    return Results.Ok(users);
-});
 
-app.MapPost("/signup", (User u) =>
+app.MapPost("/signup", async (User u, AppDbContext db) =>
 {
     var passwordHasher = new PasswordHasher<User>();
     string hash = passwordHasher.HashPassword(u, u.Password);
@@ -60,25 +62,30 @@ app.MapPost("/signup", (User u) =>
         return Results.BadRequest(new {message = "Senha inválida", code = "INVALID_PASSWORD"});
     }
 
-    if(users.Any(uv => uv.Username == u.Username))
+    bool emailExists = await db.Users.AnyAsync(user => user.Email == u.Email);
+    bool userExists = await db.Users.AnyAsync(user => user.Username == u.Username);
+
+    if (userExists)
     {
-        return Results.BadRequest(new{message = "Esse usuário já existe", code="USER_ALREADY_EXISTS"});
+        return Results.BadRequest(new {message = "Email já existe", code = "USER_ALREADY_EXISTS"});
     }
-    else if (users.Any(uv => uv.Email == u.Email))
+    else if (emailExists)
     {
-        return Results.BadRequest(new {message = "E-mail já cadastrado", code = "EMAIL_ALREADY_EXISTS"});
+        return Results.BadRequest(new {message = "Email já existe", code = "EMAIL_ALREADY_EXISTS"});
     }
     else
     {
-        users.Add(u);
+        db.Users.Add(u);
+
+        await db.SaveChangesAsync();
         return Results.Ok(new {message="Usuário cadastrado com sucesso", code="SUCCESSFUL_REGISTRATION"});
     }
 });
 
-app.MapPost("/login", (User u) =>
+app.MapPost("/login", async (User u, AppDbContext db) =>
 {
     var passwordHasher = new PasswordHasher<User>();
-    var findingUser = users.FirstOrDefault(uv => uv.Email == u.Email);
+    var findingUser = await db.Users.FirstOrDefaultAsync(user => user.Email == u.Email);
     if(findingUser != null)
     {
         var hashedPassword = findingUser.Password;
@@ -93,10 +100,5 @@ app.MapPost("/login", (User u) =>
 });
 
 app.Run();
-public class User
-{
-    public string Username {get; set;}
-    public string Email {get; set;}
-    public string Password {get; set;}
-}
+
 
